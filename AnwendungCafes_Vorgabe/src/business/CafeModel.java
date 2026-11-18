@@ -7,6 +7,14 @@ import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
 
+import readers.ConcreteCreator;
+import readers.ReaderCreator;
+import readers.ReaderProduct;
+import writers.ConcreteCsvWriterCreator;
+import writers.ConcreteTxtWriterCreator;
+import writers.WriterCreator;
+import writers.WriterProduct;
+
 public class CafeModel {
 	private Cafe cafe;
 	
@@ -20,19 +28,26 @@ public class CafeModel {
 	
 	
 	public void leseAusDate(String typ) throws IOException {
-		BufferedReader ein = new BufferedReader(new FileReader("Cafe.csv"));
-			String[] zeile = ein.readLine().split(";");
-			this.cafe = new Cafe(zeile[0], 
-				zeile[1], 
-				zeile[2], 
-				zeile[3], 
-				zeile[4].split("_"));
-				ein.close();
+		ReaderCreator c = new ConcreteCreator();
+		ReaderProduct p = c.factoryMethod(typ);
+		this.cafe = p.leseausDatei(typ);
+	}
+	
+	public void leseAusDateTxt(String typ) throws IOException {
+		ReaderCreator c = new ConcreteCreator();
+		ReaderProduct p = c.factoryMethod(typ);
+		this.cafe = p.leseausDatei(typ);
 	}
 	
 	public void schreibeCafesInModel() throws IOException {
-		BufferedWriter aus = new BufferedWriter(new FileWriter("cafesAusgabe.csv", true));
-		aus.write(this.cafe.gibCafeZurueck(';'));
-		aus.close();
+		WriterCreator c = new ConcreteCsvWriterCreator();
+		WriterProduct p = c.factoryMethod();
+		p.schreibeCafesInModel(this.cafe);
+	}
+	
+	public void schreibeCafesInTxt() throws IOException {
+		WriterCreator c = new ConcreteTxtWriterCreator();
+		WriterProduct p = c.factoryMethod();
+		p.schreibeCafesInModel(cafe);
 	}
 }

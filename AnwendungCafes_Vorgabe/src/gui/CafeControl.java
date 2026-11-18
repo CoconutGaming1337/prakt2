@@ -29,8 +29,9 @@ public class CafeControl {
       	  	   			"Das Cafe wurde gelesen!");
       		}
        		else{
-	   			cafeview.zeigeInformationsfensterAn(
-	   				"Noch nicht implementiert!");
+	   			cafemodel.leseAusDateTxt(typ);
+  	  			cafeview.zeigeInformationsfensterAn(
+      	  	   			"Das Cafe wurde gelesen!");
 	   		}
 		}
 		catch(IOException exc){
